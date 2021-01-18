@@ -7,7 +7,7 @@ CLOUDSMITH_REPO="${2}"
 CLOUDSMITH_USERNAME="${3}"
 export CLOUDSMITH_API_KEY="${4}"
 
-cloudsmith_default_args=(--sync-attempts 5 --wait-interval 15 --error-retry-max 30 --republish)
+cloudsmith_default_args=(--sync-attempts 5 --wait-interval 15 --error-retry-max 50 --republish)
 
 # required to make python 3 work with cloudsmith script
 export LC_ALL=C.UTF-8
