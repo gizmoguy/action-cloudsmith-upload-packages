@@ -7,7 +7,7 @@ CLOUDSMITH_REPO="${2}"
 CLOUDSMITH_USERNAME="${3}"
 export CLOUDSMITH_API_KEY="${4}"
 
-cloudsmith_default_args=(-F pretty_json --republish)
+cloudsmith_default_args=(--output-format pretty_json --republish)
 
 # required to make python 3 work with cloudsmith script
 export LC_ALL=C.UTF-8
