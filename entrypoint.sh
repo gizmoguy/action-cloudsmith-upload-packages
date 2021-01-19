@@ -62,7 +62,7 @@ function cloudsmith_sync {
         fi
         sleep ${timeout}
         retry_count=$((retry_count+1))
-        timeout=$(bc <<< ${timeout}*${backoff}/1)
+        timeout=$(python -c "print(round(${timeout}*${backoff}))")
     done
 }
 
