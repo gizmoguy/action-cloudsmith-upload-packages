@@ -2,6 +2,8 @@
 
 set -e -o pipefail
 
+set -x
+
 PACKAGE_LOCATION="${1}"
 CLOUDSMITH_REPO="${2}"
 CLOUDSMITH_USERNAME="${3}"
