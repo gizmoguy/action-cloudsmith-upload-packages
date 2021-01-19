@@ -48,7 +48,22 @@ function upload_deb {
 function cloudsmith_sync {
     pkg_slug=$1
 
-    cloudsmith status --output-format pretty_json "${pkg_slug}"
+    retry_count=1
+    timeout=5
+    backoff=1.3
+    while true; do
+        if [ "${retry_count}" -gt 20 ]; then
+            echo "Exceeded retry attempts for package synchronisation"
+            exit 1
+        fi
+        output=$(cloudsmith status "${pkg_slug}" | tee /dev/fd/5)
+        if echo "${output}" | grep "Completed / Fully Synchronised"; then
+            break
+        fi
+        sleep ${timeout}
+        retry_count=$((retry_count+1))
+        timeout=$(bc <<< ${timeout}*${backoff}/1)
+    done
 }
 
 function cloudsmith_upload {
