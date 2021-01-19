@@ -7,7 +7,7 @@ CLOUDSMITH_REPO="${2}"
 CLOUDSMITH_USERNAME="${3}"
 export CLOUDSMITH_API_KEY="${4}"
 
-cloudsmith_default_args=(--error-retry-max 30)
+cloudsmith_default_args=(-F pretty_json --republish)
 
 # required to make python 3 work with cloudsmith script
 export LC_ALL=C.UTF-8
@@ -25,7 +25,7 @@ function upload_rpm {
     pkg_rel=$(echo "${rev_filename}" | cut -d '.' -f3 | rev)
     release_ver="${pkg_rel:2}"
 
-    cloudsmith push rpm "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release_ver}" "${pkg_fullpath}"
+    output=$(cloudsmith push rpm "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release_ver}" "${pkg_fullpath}" | tee /dev/tty)
 }
 
 function upload_deb {
@@ -33,7 +33,7 @@ function upload_deb {
     release=$2
     pkg_fullpath=$3
 
-    cloudsmith push deb "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release}" "${pkg_fullpath}"
+    output=$(cloudsmith push deb "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release}" "${pkg_fullpath}" | tee /dev/tty)
 }
 
 function cloudsmith_upload {
