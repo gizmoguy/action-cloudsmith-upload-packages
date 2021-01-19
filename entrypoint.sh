@@ -13,6 +13,9 @@ cloudsmith_default_args=(-F pretty_json --republish)
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
+# redirect fd 5 to stdout
+exec 5>&1
+
 function upload_rpm {
     distro=$1
     pkg_fullpath=$2
@@ -25,7 +28,7 @@ function upload_rpm {
     pkg_rel=$(echo "${rev_filename}" | cut -d '.' -f3 | rev)
     release_ver="${pkg_rel:2}"
 
-    output=$(cloudsmith push rpm "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release_ver}" "${pkg_fullpath}" | tee /dev/tty)
+    output=$(cloudsmith push rpm "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release_ver}" "${pkg_fullpath}" | tee /dev/fd/5)
 }
 
 function upload_deb {
@@ -33,7 +36,7 @@ function upload_deb {
     release=$2
     pkg_fullpath=$3
 
-    output=$(cloudsmith push deb "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release}" "${pkg_fullpath}" | tee /dev/tty)
+    output=$(cloudsmith push deb "${cloudsmith_default_args[@]}" "${CLOUDSMITH_REPO}/${distro}/${release}" "${pkg_fullpath}" | tee /dev/fd/5)
 }
 
 function cloudsmith_upload {
