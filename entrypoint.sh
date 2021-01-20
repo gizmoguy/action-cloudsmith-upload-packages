@@ -48,7 +48,7 @@ function cloudsmith_sync {
 
     retry_count=1
     timeout=5
-    backoff=1.3
+    backoff=1.2
     while true; do
         if [ "${retry_count}" -gt 20 ]; then
             echo "Exceeded retry attempts for package synchronisation"
